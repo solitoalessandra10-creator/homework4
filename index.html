@@ -13,7 +13,7 @@
 <h1>📈 Random Walk (Simulazione Prezzo)</h1>
 
 <div class="pulsanti">
-    <input type="number" id="numPassi" placeholder="Numero passi" value="10" min="1">
+    <input type="number" id="numPassi" placeholder="Numero passi" value="10" min="1" onchange="impostaPassi()">
     <button id="btnGenera" onclick="generaPasso()">Genera</button>
     <button id="btnAuto" onclick="autoRun()">Auto</button>
     <button id="btnStop" onclick="stopRun()">Stop</button>
