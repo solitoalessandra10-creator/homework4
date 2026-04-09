@@ -49,7 +49,7 @@ button {
 }
 
 #btnGenera { background-color: #4CAF50; color: white; }
-#btnReset { background-color: #78909c; color: white; }
+#btnReset { background-color: #f44336; color: white; }
 
 button:hover {
     transform: scale(1.05);
