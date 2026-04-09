@@ -2,33 +2,32 @@
 <html lang="it">
 <head>
     <meta charset="UTF-8">
-    <title>Random Walk</title>
+    <title>Simulazione ABM</title>
 
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <!-- Font Poppins -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap" rel="stylesheet">
+
     <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
 
-<h1>📈 Random Walk (Simulazione Prezzo)</h1>
+<h1>Simulazione Arithmetic Brownian Motion</h1>
 
-<div class="pulsanti">
-    <input type="number" id="numPassi" placeholder="Numero passi" value="10" min="1" onchange="impostaPassi()">
-    <button id="btnGenera" onclick="generaPasso()">Genera</button>
-    <button id="btnAuto" onclick="autoRun()">Auto</button>
-    <button id="btnStop" onclick="stopRun()">Stop</button>
-    <button id="btnReset" onclick="reset()">Reset</button>
+<div class="controls">
+    <input type="number" id="x0" placeholder="Valore iniziale" value="100">
+    <input type="number" id="mu" step="0.01" placeholder="Drift" value="0.05">
+    <input type="number" id="sigma" step="0.01" placeholder="Volatilità" value="0.2">
+    <input type="number" id="steps" placeholder="Numero step" value="250">
+
+    <div class="buttons">
+        <button id="btnGenera" onclick="simulate()">Genera</button>
+        <button id="btnReset" onclick="resetChart()">Reset</button>
+    </div>
 </div>
 
-<h3>Sequenza (+1 / -1)</h3>
-<textarea id="sequenza" readonly></textarea>
+<canvas id="chart"></canvas>
 
-<h3>Valori x(i)</h3>
-<textarea id="valori" readonly></textarea>
-
-<h3>Grafico</h3>
-<canvas id="grafico" width="600" height="300"></canvas>
-
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="script.js"></script>
 
 </body>
