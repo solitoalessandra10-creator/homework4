@@ -1,92 +1,84 @@
-let chart;
+let chart; // Variabile globale per il grafico
 
-function randomNormal() {
-    let u = 0, v = 0;
-    while(u === 0) u = Math.random();
-    while(v === 0) v = Math.random();
-    return Math.sqrt(-2.0 * Math.log(u)) * Math.cos(2.0 * Math.PI * v);
+function boxMullerTransform() {
+    // Genera una variabile casuale con distribuzione Normale Standard N(0,1)
+    const u1 = Math.random();
+    const u2 = Math.random();
+    return Math.sqrt(-2.0 * Math.log(u1)) * Math.cos(2.0 * Math.PI * u2);
 }
 
-function simulate() {
-    const x0 = parseFloat(document.getElementById("x0").value);
-    const T = parseFloat(document.getElementById("T").value);
-    const mu = parseFloat(document.getElementById("mu").value);
-    const sigma = parseFloat(document.getElementById("sigma").value);
-    const steps = parseInt(document.getElementById("steps").value);
+function generaSimulazione() {
+    // 1. Recupero parametri
+    const x0 = parseFloat(document.getElementById('x0').value);
+    const T = parseFloat(document.getElementById('T').value);
+    const n = parseInt(document.getElementById('steps').value);
+    const mu = parseFloat(document.getElementById('mu').value);
+    const sigma = parseFloat(document.getElementById('sigma').value);
 
-    const dt = T / steps;
+    const dt = T / n;
+    let currentX = x0;
+    
+    const dataPoints = [x0];
+    const labels = [0];
 
-    let values = [x0];
-    let labels = [0];
-
-    for (let i = 1; i <= steps; i++) {
-        let prev = values[i - 1];
-        let Z = randomNormal();
-
-        let next = prev + mu * dt + sigma * Math.sqrt(dt) * Z;
-
-        values.push(next);
-        labels.push(i * dt);
+    // 2. Calcolo percorso ABM
+    for (let i = 1; i <= n; i++) {
+        const dz = boxMullerTransform();
+        // Formula: X_new = X_old + mu*dt + sigma*sqrt(dt)*Z
+        currentX = currentX + (mu * dt) + (sigma * Math.sqrt(dt) * dz);
+        
+        dataPoints.push(currentX);
+        labels.push((i * dt).toFixed(2));
     }
 
-    // calcoli
-    const finalValue = values[values.length - 1];
-    const min = Math.min(...values);
-    const max = Math.max(...values);
+    // 3. Statistiche
+    const minVal = Math.min(...dataPoints).toFixed(3);
+    const maxVal = Math.max(...dataPoints).toFixed(3);
+    const finalVal = dataPoints[dataPoints.length - 1].toFixed(3);
 
-    // aggiorna risultati
-    document.getElementById("res_x0").textContent = x0;
-    document.getElementById("res_T").textContent = T;
-    document.getElementById("res_steps").textContent = steps;
-    document.getElementById("res_final").textContent = finalValue.toFixed(3);
-    document.getElementById("res_min").textContent = min.toFixed(3);
-    document.getElementById("res_max").textContent = max.toFixed(3);
+    document.getElementById('results').innerHTML = `
+        <strong>Risultati:</strong><br>
+        X₀: ${x0}<br>
+        Valore finale: ${finalVal}<br>
+        Min: ${minVal}<br>
+        Max: ${maxVal}
+    `;
 
-    drawChart(labels, values);
+    // 4. Rendering Grafico
+    renderChart(labels, dataPoints);
 }
 
-function drawChart(labels, data) {
-    const ctx = document.getElementById("chart").getContext("2d");
-
-    if (chart) chart.destroy();
+function renderChart(labels, data) {
+    const ctx = document.getElementById('abmChart').getContext('2d');
+    
+    if (chart) { chart.destroy(); } // Distruggi grafico precedente
 
     chart = new Chart(ctx, {
         type: 'line',
         data: {
             labels: labels,
             datasets: [{
-                label: 'ABM',
+                label: 'Percorso ABM',
                 data: data,
+                borderColor: '#1e88e5',
                 borderWidth: 2,
+                pointRadius: 0, // Nasconde i pallini per un effetto linea fluida
                 fill: false,
-                tension: 0.2
+                tension: 0.1
             }]
         },
         options: {
-            responsive: true
+            responsive: true,
+            scales: {
+                x: { title: { display: true, text: 'Tempo (Anni)' } },
+                y: { title: { display: true, text: 'Valore X' } }
+            }
         }
     });
 }
 
-function resetAll() {
-    // reset input
-    document.getElementById("x0").value = 1000;
-    document.getElementById("T").value = 1;
-    document.getElementById("steps").value = 100;
-    document.getElementById("mu").value = 0.5;
-    document.getElementById("sigma").value = 2;
-
-    // reset risultati
-    document.getElementById("res_x0").textContent = "-";
-    document.getElementById("res_T").textContent = "-";
-    document.getElementById("res_steps").textContent = "-";
-    document.getElementById("res_final").textContent = "-";
-    document.getElementById("res_min").textContent = "-";
-    document.getElementById("res_max").textContent = "-";
-
-    // cancella grafico
-    if (chart) {
-        chart.destroy();
-        chart = null;
-    }
+function resetSimulazione() {
+    if (chart) chart.destroy();
+    document.getElementById('results').innerHTML = "";
+    // Opzionale: reset input ai valori di default
 }
