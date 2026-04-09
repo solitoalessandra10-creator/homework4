@@ -9,11 +9,11 @@ function randomNormal() {
 
 function simulate() {
     const x0 = parseFloat(document.getElementById("x0").value);
+    const T = parseFloat(document.getElementById("T").value);
     const mu = parseFloat(document.getElementById("mu").value);
     const sigma = parseFloat(document.getElementById("sigma").value);
     const steps = parseInt(document.getElementById("steps").value);
 
-    const T = 1;
     const dt = T / steps;
 
     let values = [x0];
@@ -29,15 +29,26 @@ function simulate() {
         labels.push(i * dt);
     }
 
+    // calcoli
+    const finalValue = values[values.length - 1];
+    const min = Math.min(...values);
+    const max = Math.max(...values);
+
+    // aggiorna risultati
+    document.getElementById("res_x0").textContent = x0;
+    document.getElementById("res_T").textContent = T;
+    document.getElementById("res_steps").textContent = steps;
+    document.getElementById("res_final").textContent = finalValue.toFixed(3);
+    document.getElementById("res_min").textContent = min.toFixed(3);
+    document.getElementById("res_max").textContent = max.toFixed(3);
+
     drawChart(labels, values);
 }
 
 function drawChart(labels, data) {
     const ctx = document.getElementById("chart").getContext("2d");
 
-    if (chart) {
-        chart.destroy();
-    }
+    if (chart) chart.destroy();
 
     chart = new Chart(ctx, {
         type: 'line',
@@ -48,7 +59,7 @@ function drawChart(labels, data) {
                 data: data,
                 borderWidth: 2,
                 fill: false,
-                tension: 0.1
+                tension: 0.2
             }]
         },
         options: {
@@ -57,16 +68,25 @@ function drawChart(labels, data) {
     });
 }
 
-function resetChart() {
+function resetAll() {
+    // reset input
+    document.getElementById("x0").value = 1000;
+    document.getElementById("T").value = 1;
+    document.getElementById("steps").value = 100;
+    document.getElementById("mu").value = 0.5;
+    document.getElementById("sigma").value = 2;
+
+    // reset risultati
+    document.getElementById("res_x0").textContent = "-";
+    document.getElementById("res_T").textContent = "-";
+    document.getElementById("res_steps").textContent = "-";
+    document.getElementById("res_final").textContent = "-";
+    document.getElementById("res_min").textContent = "-";
+    document.getElementById("res_max").textContent = "-";
+
     // cancella grafico
     if (chart) {
         chart.destroy();
         chart = null;
     }
-
-    // reset input ai valori default
-    document.getElementById("x0").value = 100;
-    document.getElementById("mu").value = 0.05;
-    document.getElementById("sigma").value = 0.2;
-    document.getElementById("steps").value = 250;
 }
