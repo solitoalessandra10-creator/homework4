@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <title>Random Walk</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<h1>📈 Random Walk (Simulazione Prezzo)</h1>
+
+<div class="pulsanti">
+    <input type="number" id="numPassi" placeholder="Numero passi" value="10" min="1">
+    <button id="btnGenera" onclick="generaPasso()">Genera</button>
+    <button id="btnAuto" onclick="autoRun()">Auto</button>
+    <button id="btnStop" onclick="stopRun()">Stop</button>
+    <button id="btnReset" onclick="reset()">Reset</button>
+</div>
+
+<h3>Sequenza (+1 / -1)</h3>
+<textarea id="sequenza" readonly></textarea>
+
+<h3>Valori x(i)</h3>
+<textarea id="valori" readonly></textarea>
+
+<h3>Grafico</h3>
+<canvas id="grafico" width="600" height="300"></canvas>
+
+<script src="script.js"></script>
+
+</body>
+</html>
