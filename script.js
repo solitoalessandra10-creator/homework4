@@ -57,21 +57,18 @@ function disegnaGrafico(tempi, valori) {
                 legend: { display: true }
             },
             scales: {
-                x: {
-                    title: {
-                        display: true,
-                        text: 'Tempo'
-                    },
-                    grid: { display: true }
-                },
-                y: {
-                    title: {
-                        display: true,
-                        text: 'Valore del processo'
-                    },
-                    grid: { display: true }
-                }
+    x: {
+        title: {
+            display: true,
+            text: 'Tempo'
+        },
+        grid: { display: true },
+        ticks: {
+            callback: function(value, index) {
+                return tempi[index].toFixed(3);
             }
+        }
+    },
         }
     });
 }
