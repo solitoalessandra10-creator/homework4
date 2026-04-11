@@ -1,7 +1,11 @@
 let chart;
 
-document.getElementById("btnGenera").onclick = simula;
-document.getElementById("btnReset").onclick = reset;
+document.addEventListener("DOMContentLoaded", function() {
+
+    document.getElementById("btnGenera").onclick = simula;
+    document.getElementById("btnReset").onclick = reset;
+
+});
 
 function simula() {
     const n = parseInt(document.getElementById("passi").value);
@@ -69,7 +73,14 @@ function disegnaGrafico(tempi, valori) {
             }
         }
     },
-        }
+    y: {
+        title: {
+            display: true,
+            text: 'Valore del processo'
+        },
+        grid: { display: true }
+    }
+}
     });
 }
 
