@@ -53,7 +53,7 @@ function disegnaGrafico(tempi, valori) {
             datasets: [{
                 label: 'Random Walk scalata',
                 data: valori,
-                borderColor: '#4CAF50',
+                borderColor: '#800000',
                 borderWidth: 1.5,
                 pointRadius: 0,
                 fill: false,
